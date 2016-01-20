@@ -16,11 +16,13 @@ public class globalJNI {
         try {
           String osName = System.getProperty("os.name");
           switch (osName) {
-            case "Mac OS X":
-              NativeUtils.loadLibraryFromJar("/natives/libjavamitie.jnilib");
-              break;
             case "Linux":
               NativeUtils.loadLibraryFromJar("/natives/libjavamitie.so");
+              break;
+            case "Windows 7":
+              NativeUtils.loadLibraryFromJar("/natives/javamitie.dll");
+              NativeUtils.loadLibraryFromJar("/natives/msvcp140.dll");
+              NativeUtils.loadLibraryFromJar("/natives/vcruntime140.dll");
               break;
           }
         } catch (UnsatisfiedLinkError e) {
