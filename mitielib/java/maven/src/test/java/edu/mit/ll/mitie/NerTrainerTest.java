@@ -73,6 +73,10 @@ public class NerTrainerTest {
 
         microTrainer.trainSeparateModels(totalWordFeatureExtractor, file.getAbsolutePath());
 
+        System.out.println("Precision: " + microTrainer.getPrecision());
+        System.out.println("Recall: " + microTrainer.getRecall());
+
+
         microTrainer1.trainSeparateModels(totalWordFeatureExtractor, file.getAbsolutePath());
 
         // restore the model using the pure model and extractor
@@ -111,14 +115,12 @@ public class NerTrainerTest {
             mapResult.put(tag, current);
         }
 
+        assertEquals(1.0, microTrainer.getPrecision(), 0.0001);
+        assertEquals(1.0, microTrainer.getRecall(), 0.0001);
         assertEquals(2, entities.size());
         assertEquals("John Becker ", mapResult.get("person"));
         assertEquals("HBU ", mapResult.get("org"));
     }
-
-
-
-
 
     public static String printEntity (
             StringVector words,

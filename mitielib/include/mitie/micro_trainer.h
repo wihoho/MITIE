@@ -226,7 +226,7 @@ namespace mitie
         !*/
 
         micro_ner train ( const total_word_feature_extractor& tfe
-        ) const;
+        );
         /*!
             requires
                 - size() > 0
@@ -234,6 +234,20 @@ namespace mitie
                 - Trains a named_entity_extractor based on the training instances given to
                   this object via add() calls and returns the result.
         !*/
+
+        double get_precision (
+        ) const;
+
+        void set_precision (
+            double new_precision
+        );
+
+        double get_recall (
+        ) const;
+
+        void set_recall (
+            double new_recall
+        );
 
     private:
 
@@ -245,19 +259,19 @@ namespace mitie
         classifier_type train_ner_segment_classifier (
             const std::vector<ner_sample_type>& samples,
             const std::vector<unsigned long>& labels
-        ) const;
+        );
 
         void extract_ner_segment_feats (
             const total_word_feature_extractor& tfe,
             const dlib::sequence_segmenter<ner_feature_extractor>& segmenter,
             std::vector<ner_sample_type>& samples,
             std::vector<unsigned long>& labels
-        ) const;
+        );
 
         void train_segmenter (
             const total_word_feature_extractor& tfe,
             dlib::sequence_segmenter<ner_feature_extractor>& segmenter
-        ) const;
+        );
 
         unsigned long get_label_id (
             const std::string& str
@@ -266,7 +280,6 @@ namespace mitie
         std::vector<std::string> get_all_labels(
         ) const;
 
-
         //total_word_feature_extractor tfe;
         double beta;
         unsigned long num_threads;
@@ -274,6 +287,8 @@ namespace mitie
         std::vector<std::vector<std::string> > sentences;
         std::vector<std::vector<std::pair<unsigned long, unsigned long> > > chunks;
         std::vector<std::vector<unsigned long> > chunk_labels;
+        double precision;
+        double recall;
     };
 
 // ----------------------------------------------------------------------------------------

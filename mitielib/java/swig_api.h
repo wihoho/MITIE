@@ -380,7 +380,7 @@ public:
     void trainSeparateModels(
         const TotalWordFeatureExtractor& extractorObject, 
         const std::string& filename
-    ) const
+    )
     {
         mitie::micro_ner obj = impl.train(extractorObject.impl);
         dlib::serialize(filename)
@@ -388,6 +388,16 @@ public:
         << obj.get_df()
         << obj.get_segmenter()
         << obj.get_tag_name_strings();
+    }
+
+    double getPrecision() 
+    {
+        return impl.get_precision();
+    }
+
+    double getRecall()
+    {
+        return impl.get_recall();
     }
 private:
     mitie::micro_trainer impl;

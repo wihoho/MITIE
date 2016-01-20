@@ -51,4 +51,12 @@ public class MicroTrainer {
     globalJNI.MicroTrainer_trainSeparateModels(swigCPtr, this, TotalWordFeatureExtractor.getCPtr(extractorObject), extractorObject, filename);
   }
 
+  public double getPrecision() {
+    return globalJNI.MicroTrainer_getPrecision(swigCPtr, this);
+  }
+
+  public double getRecall() {
+    return globalJNI.MicroTrainer_getRecall(swigCPtr, this);
+  }
+
 }

@@ -215,6 +215,14 @@ namespace mitie
     get_beta (
     ) const { return beta; }
 
+    double micro_trainer::
+    get_precision (
+    ) const { return precision; }
+
+    double micro_trainer::
+    get_recall (
+    ) const { return recall; }
+
 // ----------------------------------------------------------------------------------------
 
     void micro_trainer::
@@ -226,11 +234,29 @@ namespace mitie
         beta = new_beta;
     }
 
+    void micro_trainer::
+    set_precision (
+        double new_precision
+    )
+    {
+        DLIB_CASSERT(new_precision >= 0, "Invalid data");
+        precision = new_precision;
+    }
+
+    void micro_trainer::
+    set_recall (
+        double new_recall
+    )
+    {
+        DLIB_CASSERT(new_recall >= 0, "Invalid data");
+        recall = new_recall;
+    }
+
 // ----------------------------------------------------------------------------------------
 
     micro_ner micro_trainer::
     train ( const total_word_feature_extractor& tfe
-    ) const
+    )
     /*!
         requires
             - size() > 0
@@ -256,8 +282,8 @@ namespace mitie
 
 	dlib::uint64 start = ts.get_timestamp();
 
-        sequence_segmenter<ner_feature_extractor> segmenter;
-        train_segmenter(tfe, segmenter);
+    sequence_segmenter<ner_feature_extractor> segmenter;
+    train_segmenter(tfe, segmenter);
 
 	dlib::uint64 stop = ts.get_timestamp();
 
@@ -269,13 +295,13 @@ namespace mitie
 
         cout << "Part II: train segment classifier" << endl;
 
-	start = ts.get_timestamp();
+	   start = ts.get_timestamp();
 
-        classifier_type df = train_ner_segment_classifier(samples, labels);
+       classifier_type df = train_ner_segment_classifier(samples, labels);
 
-	stop = ts.get_timestamp();
+	   stop = ts.get_timestamp();
 
-	cout << "Part II: elapsed time: " << (stop - start)/1000/1000 << " seconds." << endl;
+	   cout << "Part II: elapsed time: " << (stop - start)/1000/1000 << " seconds." << endl;
 
         cout << "df.number_of_classes(): "<< df.number_of_classes() << endl;
 
@@ -368,7 +394,7 @@ namespace mitie
     train_ner_segment_classifier (
         const std::vector<ner_sample_type>& samples,
         const std::vector<unsigned long>& labels
-    ) const
+    ) 
     {
         cout << "now do training" << endl;
         cout << "num training samples: " << samples.size() << endl;
@@ -436,7 +462,7 @@ namespace mitie
         const sequence_segmenter<ner_feature_extractor>& segmenter,
         std::vector<ner_sample_type>& samples,
         std::vector<unsigned long>& labels
-    ) const
+    )
     {
         samples.clear();
         labels.clear();
@@ -507,7 +533,7 @@ namespace mitie
     train_segmenter (
         const total_word_feature_extractor& tfe,
         sequence_segmenter<ner_feature_extractor>& segmenter
-    ) const
+    ) 
     {
         cout << "words in dictionary: " << tfe.get_num_words_in_dictionary() << endl;
         cout << "num features: " << tfe.get_num_dimensions() << endl;
@@ -573,11 +599,13 @@ namespace mitie
             trainer.set_loss_per_missed_segment(params(1)/LOSS_SCALE);
         }
 
-
         segmenter = trainer.train(samples, local_chunks);
+        matrix<double,1,3> metrics = test_sequence_segmenter(segmenter, samples, local_chunks);
 
         cout << "num feats in chunker model: "<< segmenter.get_weights().size() << endl;
-        cout << "train: precision, recall, f1-score: "<< test_sequence_segmenter(segmenter, samples, local_chunks);
+        cout << "train: precision, recall, f1-score: "<< metrics;
+        precision = metrics(0);
+        recall = metrics(1);
     }
 
 // ----------------------------------------------------------------------------------------
