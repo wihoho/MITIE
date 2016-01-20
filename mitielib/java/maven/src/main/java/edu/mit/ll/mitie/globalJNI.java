@@ -22,11 +22,6 @@ public class globalJNI {
             case "Linux":
               NativeUtils.loadLibraryFromJar("/natives/libjavamitie.so");
               break;
-            case "Windows 7":
-              NativeUtils.loadLibraryFromJar("/natives/javamitie.dll");
-              NativeUtils.loadLibraryFromJar("/natives/msvcp140.dll");
-              NativeUtils.loadLibraryFromJar("/natives/vcruntime140.dll");
-              break;
           }
         } catch (UnsatisfiedLinkError e) {
         System.err.println("Native code library failed to load. \n" + e);
@@ -127,6 +122,8 @@ public class globalJNI {
   public final static native void MicroTrainer_add(long jarg1, MicroTrainer jarg1_, long jarg2, NerMicroTrainingInstance jarg2_);
   public final static native void MicroTrainer_setThreadNum(long jarg1, MicroTrainer jarg1_, long jarg2);
   public final static native void MicroTrainer_trainSeparateModels(long jarg1, MicroTrainer jarg1_, long jarg2, TotalWordFeatureExtractor jarg2_, String jarg3);
+  public final static native double MicroTrainer_getPrecision(long jarg1, MicroTrainer jarg1_);
+  public final static native double MicroTrainer_getRecall(long jarg1, MicroTrainer jarg1_);
   public final static native void delete_MicroTrainer(long jarg1);
   public final static native long new_NerTrainer__SWIG_0(String jarg1);
   public final static native long new_NerTrainer__SWIG_1(long jarg1, TotalWordFeatureExtractor jarg1_);
