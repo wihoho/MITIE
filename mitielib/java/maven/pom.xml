@@ -12,6 +12,13 @@
     <description>This project provides free (even for commercial use) state-of-the-art information extraction tools. The current release includes tools for performing named entity extraction and binary relation detection as well as tools for training custom extractors and relation detectors.</description>
     <url>https://github.com/mit-nlp/MITIE</url>
 
+    <repositories>
+        <repository>
+            <id>Atilika Open Source repository</id>
+            <url>http://www.atilika.org/nexus/content/repositories/atilika</url>
+        </repository>
+    </repositories>
+
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
