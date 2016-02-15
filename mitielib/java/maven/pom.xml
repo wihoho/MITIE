@@ -67,7 +67,7 @@
                 <executions>
                     <!--download english extractor-->
                     <execution>
-                        <id>download-files</id>
+                        <id>download-english-extractor</id>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>run</goal>
@@ -84,7 +84,7 @@
 
                     <!--download japanese extractor-->
                     <execution>
-                        <id>download-files</id>
+                        <id>download-japanese-extractor</id>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>run</goal>
