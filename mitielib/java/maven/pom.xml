@@ -60,12 +60,12 @@
 
     <build>
         <plugins>
-            <!--download english extractor-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.8</version>
                 <executions>
+                    <!--download english extractor-->
                     <execution>
                         <id>download-files</id>
                         <phase>generate-resources</phase>
@@ -81,14 +81,8 @@
                             </target>
                         </configuration>
                     </execution>
-                </executions>
-            </plugin>
-            <!--download japanese extractor-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.8</version>
-                <executions>
+
+                    <!--download japanese extractor-->
                     <execution>
                         <id>download-files</id>
                         <phase>generate-resources</phase>
