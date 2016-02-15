@@ -56,4 +56,19 @@ public class TotalWordFeatureExtractor {
 
     return englishExtractor;
   }
+
+  private static TotalWordFeatureExtractor japaneseExtractor;
+
+  public static TotalWordFeatureExtractor getJapaneseExtractor() {
+    if (Objects.isNull(japaneseExtractor)) {
+      try {
+        String tempExtractorPath = NativeUtils.getTempPathFromJar("/extractors/japanese/jp_extractor_m.dat");
+        japaneseExtractor = new TotalWordFeatureExtractor(tempExtractorPath);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    return japaneseExtractor;
+  }
 }
