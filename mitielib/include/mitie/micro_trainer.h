@@ -225,7 +225,7 @@ namespace mitie
                 - #get_beta() == new_beta
         !*/
 
-        micro_ner train ( const total_word_feature_extractor& tfe
+        micro_ner train ( const total_word_feature_extractor& tfe, bool enableSegmenter
         );
         /*!
             requires
@@ -278,7 +278,8 @@ namespace mitie
 
         void train_segmenter (
             const total_word_feature_extractor& tfe,
-            dlib::sequence_segmenter<ner_feature_extractor>& segmenter
+            dlib::sequence_segmenter<ner_feature_extractor>& segmenter,
+            bool enableSegmenter
         );
 
         unsigned long get_label_id (

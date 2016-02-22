@@ -391,10 +391,11 @@ public:
 
     void trainSeparateModels(
         const TotalWordFeatureExtractor& extractorObject, 
-        const std::string& filename
+        const std::string& filename,
+        bool enableSegmenter
     )
     {
-        mitie::micro_ner obj = impl.train(extractorObject.impl);
+        mitie::micro_ner obj = impl.train(extractorObject.impl, enableSegmenter);
         dlib::serialize(filename)
         << "mitie::named_entity_extractor_pure_model"
         << obj.get_df()

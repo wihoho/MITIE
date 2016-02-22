@@ -125,7 +125,7 @@ public class globalJNI {
   public final static native void MicroTrainer_setThreadNum(long jarg1, MicroTrainer jarg1_, long jarg2);
   public final static native void MicroTrainer_setC(long jarg1, MicroTrainer jarg1_, double jarg2);
   public final static native void MicroTrainer_setLoss(long jarg1, MicroTrainer jarg1_, double jarg2);
-  public final static native void MicroTrainer_trainSeparateModels(long jarg1, MicroTrainer jarg1_, long jarg2, TotalWordFeatureExtractor jarg2_, String jarg3);
+  public final static native void MicroTrainer_trainSeparateModels(long jarg1, MicroTrainer jarg1_, long jarg2, TotalWordFeatureExtractor jarg2_, String jarg3, boolean jarg4);
   public final static native double MicroTrainer_getPrecision(long jarg1, MicroTrainer jarg1_);
   public final static native double MicroTrainer_getRecall(long jarg1, MicroTrainer jarg1_);
   public final static native void delete_MicroTrainer(long jarg1);

@@ -60,8 +60,8 @@ public class NerTrainerTest {
         // The trainer can take advantage of a multi-core CPU.  So set the number of threads
         // equal to the number of processing cores for maximum training speed.
         microTrainer.setThreadNum(4);
-        microTrainer.setC(30.0);
-        microTrainer.setLoss(4.0);
+        microTrainer.setC(20.0);
+        microTrainer.setLoss(3.0);
 
         // This function does the work of training.  Note that it can take a long time to run
         // when using larger training datasets.  So be patient.  When it finishes it will
@@ -69,7 +69,7 @@ public class NerTrainerTest {
         File file = File.createTempFile( "train", "model.dat");
         file.deleteOnExit();
 
-        microTrainer.trainSeparateModels(totalWordFeatureExtractor, file.getAbsolutePath());
+        microTrainer.trainSeparateModels(totalWordFeatureExtractor, file.getAbsolutePath(), false);
 
         System.out.println("Precision: " + microTrainer.getPrecision());
         System.out.println("Recall: " + microTrainer.getRecall());

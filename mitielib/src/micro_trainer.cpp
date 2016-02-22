@@ -273,7 +273,7 @@ namespace mitie
 // ----------------------------------------------------------------------------------------
 
     micro_ner micro_trainer::
-    train ( const total_word_feature_extractor& tfe
+    train ( const total_word_feature_extractor& tfe, bool enableSegmenter
     )
     /*!
         requires
@@ -301,7 +301,7 @@ namespace mitie
 	dlib::uint64 start = ts.get_timestamp();
 
     sequence_segmenter<ner_feature_extractor> segmenter;
-    train_segmenter(tfe, segmenter);
+    train_segmenter(tfe, segmenter, enableSegmenter);
 
 	dlib::uint64 stop = ts.get_timestamp();
 
@@ -550,7 +550,8 @@ namespace mitie
     void micro_trainer::
     train_segmenter (
         const total_word_feature_extractor& tfe,
-        sequence_segmenter<ner_feature_extractor>& segmenter 
+        sequence_segmenter<ner_feature_extractor>& segmenter,
+        bool enableSegmenter
     ) 
     {
         cout << "words in dictionary: " << tfe.get_num_words_in_dictionary() << endl;
@@ -588,32 +589,32 @@ namespace mitie
         trainer.set_loss_per_missed_segment(loss);
         //trainer.be_verbose();
 
-        // if (samples.size() > 1)
-        // {
-        //     matrix<double,2,1> params;
-        //     params = C, loss*LOSS_SCALE;
+         if (samples.size() > 1 && enableSegmenter)
+         {
+             matrix<double,2,1> params;
+             params = C, loss*LOSS_SCALE;
 
-        //     matrix<double,2,1> min_params, max_params;
-        //     min_params = 0.1, 1*LOSS_SCALE;
-        //     max_params = 100, 10*LOSS_SCALE;
+             matrix<double,2,1> min_params, max_params;
+             min_params = 0.1, 1*LOSS_SCALE;
+             max_params = 100, 10*LOSS_SCALE;
 
-        //     train_segmenter_bobyqa_objective obj(trainer, samples, local_chunks);
-        //     try
-        //     {
-        //         find_max_bobyqa(obj, params, params.size()*2+1, min_params, max_params, 15, 1, 100);
-        //     }
-        //     catch (bobyqa_failure&)
-        //     {
-        //         // if the optimization ran too long then just use the default
-        //         // parameters
-        //         params = C, loss_per_missed_segment*LOSS_SCALE;
-        //     }
+             train_segmenter_bobyqa_objective obj(trainer, samples, local_chunks);
+             try
+             {
+                 find_max_bobyqa(obj, params, params.size()*2+1, min_params, max_params, 15, 1, 100);
+             }
+             catch (bobyqa_failure&)
+             {
+                 // if the optimization ran too long then just use the default
+                 // parameters
+                 params = C, loss*LOSS_SCALE;
+             }
 
-        //     cout << "best C: "<< params(0) << endl;
-        //     cout << "best loss: "<< params(1)/LOSS_SCALE << endl;
-        //     trainer.set_c(params(0));
-        //     trainer.set_loss_per_missed_segment(params(1)/LOSS_SCALE);
-        // }
+             cout << "best C: "<< params(0) << endl;
+             cout << "best loss: "<< params(1)/LOSS_SCALE << endl;
+             trainer.set_c(params(0));
+             trainer.set_loss_per_missed_segment(params(1)/LOSS_SCALE);
+         }
 
         segmenter = trainer.train(samples, local_chunks);
         matrix<double,1,3> metrics = test_sequence_segmenter(segmenter, samples, local_chunks);
