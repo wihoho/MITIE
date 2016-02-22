@@ -365,6 +365,8 @@ class MicroTrainer
 public:
     MicroTrainer() : impl() 
     {
+        impl.set_C(20);
+        impl.set_loss(3);
     }
 
     void add(const NerMicroTrainingInstance& item) 
@@ -377,12 +379,12 @@ public:
         impl.set_num_threads(num);
     }
 
-    void setC(unsigned long c)
+    void setC(double c)
     {
         impl.set_C(c);
     }
 
-    void setLoss(unsigned long loss)
+    void setLoss(double loss)
     {
         impl.set_loss(loss);
     } 

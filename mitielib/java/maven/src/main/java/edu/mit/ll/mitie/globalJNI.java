@@ -12,26 +12,26 @@ import java.io.IOException;
 
 public class globalJNI {
 
-    static {
-        try {
-          String osName = System.getProperty("os.name");
-          switch (osName) {
-            case "Linux":
-              NativeUtils.loadLibraryFromJar("/natives/libjavamitie.so");
-              break;
-            case "Windows 7":
-              NativeUtils.loadLibraryFromJar("/natives/javamitie.dll");
-              NativeUtils.loadLibraryFromJar("/natives/msvcp140.dll");
-              NativeUtils.loadLibraryFromJar("/natives/vcruntime140.dll");
-              break;
-          }
-        } catch (UnsatisfiedLinkError e) {
-        System.err.println("Native code library failed to load. \n" + e);
-        System.exit(1);
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
+  static {
+    try {
+      String osName = System.getProperty("os.name");
+      switch (osName) {
+        case "Linux":
+          NativeUtils.loadLibraryFromJar("/natives/libjavamitie.so");
+          break;
+        case "Windows 7":
+          NativeUtils.loadLibraryFromJar("/natives/javamitie.dll");
+          NativeUtils.loadLibraryFromJar("/natives/msvcp140.dll");
+          NativeUtils.loadLibraryFromJar("/natives/vcruntime140.dll");
+          break;
+      }
+    } catch (UnsatisfiedLinkError e) {
+      System.err.println("Native code library failed to load. \n" + e);
+      System.exit(1);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
+  }
     
   public final static native long new_StringVector__SWIG_0();
   public final static native long new_StringVector__SWIG_1(long jarg1);
@@ -123,6 +123,8 @@ public class globalJNI {
   public final static native long new_MicroTrainer();
   public final static native void MicroTrainer_add(long jarg1, MicroTrainer jarg1_, long jarg2, NerMicroTrainingInstance jarg2_);
   public final static native void MicroTrainer_setThreadNum(long jarg1, MicroTrainer jarg1_, long jarg2);
+  public final static native void MicroTrainer_setC(long jarg1, MicroTrainer jarg1_, double jarg2);
+  public final static native void MicroTrainer_setLoss(long jarg1, MicroTrainer jarg1_, double jarg2);
   public final static native void MicroTrainer_trainSeparateModels(long jarg1, MicroTrainer jarg1_, long jarg2, TotalWordFeatureExtractor jarg2_, String jarg3);
   public final static native double MicroTrainer_getPrecision(long jarg1, MicroTrainer jarg1_);
   public final static native double MicroTrainer_getRecall(long jarg1, MicroTrainer jarg1_);

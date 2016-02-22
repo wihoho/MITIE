@@ -41,7 +41,6 @@ public class TotalWordFeatureExtractor {
   public TotalWordFeatureExtractor(String filename) {
     this(globalJNI.new_TotalWordFeatureExtractor(filename), true);
   }
-
   private static TotalWordFeatureExtractor englishExtractor;
 
   public static TotalWordFeatureExtractor getEnglishExtractor() {
