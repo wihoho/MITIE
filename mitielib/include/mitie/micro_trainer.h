@@ -249,6 +249,14 @@ namespace mitie
             double new_recall
         );
 
+        void set_C (
+            double new_C
+        );
+
+         void set_loss (
+            double new_loss
+        );
+
     private:
 
         unsigned long count_of_least_common_label (
@@ -289,6 +297,8 @@ namespace mitie
         std::vector<std::vector<unsigned long> > chunk_labels;
         double precision;
         double recall;
+        double C;
+        double loss;
     };
 
 // ----------------------------------------------------------------------------------------

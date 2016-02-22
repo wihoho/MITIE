@@ -377,6 +377,16 @@ public:
         impl.set_num_threads(num);
     }
 
+    void setC(unsigned long c)
+    {
+        impl.set_C(c);
+    }
+
+    void setLoss(unsigned long loss)
+    {
+        impl.set_loss(loss);
+    } 
+
     void trainSeparateModels(
         const TotalWordFeatureExtractor& extractorObject, 
         const std::string& filename
