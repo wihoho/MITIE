@@ -62,6 +62,7 @@ public class NerTrainerTest {
         microTrainer.setThreadNum(4);
         microTrainer.setC(20.0);
         microTrainer.setLoss(3.0);
+        microTrainer.setEnableSegmenter(false);
 
         // This function does the work of training.  Note that it can take a long time to run
         // when using larger training datasets.  So be patient.  When it finishes it will
@@ -69,7 +70,7 @@ public class NerTrainerTest {
         File file = File.createTempFile( "train", "model.dat");
         file.deleteOnExit();
 
-        microTrainer.trainSeparateModels(totalWordFeatureExtractor, file.getAbsolutePath(), false);
+        microTrainer.trainSeparateModels(totalWordFeatureExtractor, file.getAbsolutePath());
 
         System.out.println("Precision: " + microTrainer.getPrecision());
         System.out.println("Recall: " + microTrainer.getRecall());

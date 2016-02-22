@@ -365,8 +365,7 @@ class MicroTrainer
 public:
     MicroTrainer() : impl() 
     {
-        impl.set_C(20);
-        impl.set_loss(3);
+
     }
 
     void add(const NerMicroTrainingInstance& item) 
@@ -387,15 +386,19 @@ public:
     void setLoss(double loss)
     {
         impl.set_loss(loss);
-    } 
+    }
+
+    void setEnableSegmenter(bool enabler)
+    {
+        impl.set_enableSegmenter(enabler);
+    }
 
     void trainSeparateModels(
         const TotalWordFeatureExtractor& extractorObject, 
-        const std::string& filename,
-        bool enableSegmenter
+        const std::string& filename
     )
     {
-        mitie::micro_ner obj = impl.train(extractorObject.impl, enableSegmenter);
+        mitie::micro_ner obj = impl.train(extractorObject.impl);
         dlib::serialize(filename)
         << "mitie::named_entity_extractor_pure_model"
         << obj.get_df()

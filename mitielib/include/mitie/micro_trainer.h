@@ -225,7 +225,7 @@ namespace mitie
                 - #get_beta() == new_beta
         !*/
 
-        micro_ner train ( const total_word_feature_extractor& tfe, bool enableSegmenter
+        micro_ner train ( const total_word_feature_extractor& tfe
         );
         /*!
             requires
@@ -257,6 +257,10 @@ namespace mitie
             double new_loss
         );
 
+        void set_enableSegmenter (
+           bool new_enableSegmenter
+        );
+
     private:
 
         unsigned long count_of_least_common_label (
@@ -278,8 +282,7 @@ namespace mitie
 
         void train_segmenter (
             const total_word_feature_extractor& tfe,
-            dlib::sequence_segmenter<ner_feature_extractor>& segmenter,
-            bool enableSegmenter
+            dlib::sequence_segmenter<ner_feature_extractor>& segmenter
         );
 
         unsigned long get_label_id (
@@ -300,6 +303,7 @@ namespace mitie
         double recall;
         double C;
         double loss;
+        bool enableSegmenter;
     };
 
 // ----------------------------------------------------------------------------------------

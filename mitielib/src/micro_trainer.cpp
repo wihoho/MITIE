@@ -127,7 +127,7 @@ namespace mitie
     // }
 
     micro_trainer::
-    micro_trainer () : beta(0.5), num_threads(4), C(20.0), loss(3.0)
+    micro_trainer () : beta(0.5), num_threads(4), C(20.0), loss(3.0), enableSegmenter(true)
     {
 
     }
@@ -270,10 +270,18 @@ namespace mitie
         loss = new_loss;
     }
 
+    void micro_trainer::
+    set_enableSegmenter (
+            bool new_enableSegmenter
+    )
+    {
+        enableSegmenter = new_enableSegmenter;
+    }
+
 // ----------------------------------------------------------------------------------------
 
     micro_ner micro_trainer::
-    train ( const total_word_feature_extractor& tfe, bool enableSegmenter
+    train ( const total_word_feature_extractor& tfe
     )
     /*!
         requires
@@ -301,7 +309,7 @@ namespace mitie
 	dlib::uint64 start = ts.get_timestamp();
 
     sequence_segmenter<ner_feature_extractor> segmenter;
-    train_segmenter(tfe, segmenter, enableSegmenter);
+    train_segmenter(tfe, segmenter);
 
 	dlib::uint64 stop = ts.get_timestamp();
 
@@ -550,8 +558,7 @@ namespace mitie
     void micro_trainer::
     train_segmenter (
         const total_word_feature_extractor& tfe,
-        sequence_segmenter<ner_feature_extractor>& segmenter,
-        bool enableSegmenter
+        sequence_segmenter<ner_feature_extractor>& segmenter
     ) 
     {
         cout << "words in dictionary: " << tfe.get_num_words_in_dictionary() << endl;
