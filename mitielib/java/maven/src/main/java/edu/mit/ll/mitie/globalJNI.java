@@ -21,13 +21,11 @@ public class globalJNI {
               break;
             case "Windows 7":
               NativeUtils.loadLibraryFromJar("/natives/javamitie.dll");
-              NativeUtils.loadLibraryFromJar("/natives/msvcp140.dll");
-              NativeUtils.loadLibraryFromJar("/natives/vcruntime140.dll");
               break;
           }
         } catch (UnsatisfiedLinkError e) {
-        System.err.println("Native code library failed to load. \n" + e);
-        System.exit(1);
+        System.err.println("Native code library failed to load. Please contact Magic Core. \n" + e);
+          e.printStackTrace();
         } catch (IOException e) {
           e.printStackTrace();
         }
