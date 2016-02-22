@@ -365,6 +365,7 @@ class MicroTrainer
 public:
     MicroTrainer() : impl() 
     {
+
     }
 
     void add(const NerMicroTrainingInstance& item) 
@@ -375,6 +376,21 @@ public:
     void setThreadNum(unsigned long num) 
     {
         impl.set_num_threads(num);
+    }
+
+    void setC(double c)
+    {
+        impl.set_C(c);
+    }
+
+    void setLoss(double loss)
+    {
+        impl.set_loss(loss);
+    }
+
+    void setEnableSegmenter(bool enabler)
+    {
+        impl.set_enableSegmenter(enabler);
     }
 
     void trainSeparateModels(

@@ -127,7 +127,7 @@ namespace mitie
     // }
 
     micro_trainer::
-    micro_trainer () : beta(0.5), num_threads(4)
+    micro_trainer () : beta(0.5), num_threads(4), C(20.0), loss(3.0), enableSegmenter(true)
     {
 
     }
@@ -250,6 +250,32 @@ namespace mitie
     {
         DLIB_CASSERT(new_recall >= 0, "Invalid data");
         recall = new_recall;
+    }
+
+    void micro_trainer::
+    set_C (
+        double new_C
+    )
+    {
+        DLIB_CASSERT(new_C >= 0, "Invalid data");
+        C = new_C;
+    }
+
+    void micro_trainer::
+    set_loss (
+        double new_loss
+    )
+    {
+        DLIB_CASSERT(new_loss >= 0, "Invalid data");
+        loss = new_loss;
+    }
+
+    void micro_trainer::
+    set_enableSegmenter (
+            bool new_enableSegmenter
+    )
+    {
+        enableSegmenter = new_enableSegmenter;
     }
 
 // ----------------------------------------------------------------------------------------
@@ -553,51 +579,49 @@ namespace mitie
         ner_feature_extractor nfe(tfe.get_num_dimensions());
         structural_sequence_segmentation_trainer<ner_feature_extractor> trainer(nfe);
 
-        const double C = 20.0; 
         const double eps = 0.01;
         const unsigned long max_iterations = 2000;
-        const double loss_per_missed_segment = 3.0; 
-        const unsigned long cache_size = 5; 
+        const unsigned long cache_size = 5000;
         cout << "C:           "<< C << endl;
         cout << "epsilon:     "<< eps << endl;
         cout << "num threads: "<< num_threads << endl;
         cout << "cache size:  "<< cache_size << endl;
         cout << "max iterations: " << max_iterations << endl;
-        cout << "loss per missed segment:  "<< loss_per_missed_segment << endl;
+        cout << "loss per missed segment:  "<< loss << endl;
         trainer.set_c(C);
         trainer.set_epsilon(eps);
         trainer.set_max_iterations(max_iterations);
         trainer.set_num_threads(num_threads);
         trainer.set_max_cache_size(cache_size);
-        trainer.set_loss_per_missed_segment(loss_per_missed_segment);
+        trainer.set_loss_per_missed_segment(loss);
         //trainer.be_verbose();
 
-        if (samples.size() > 1)
-        {
-            matrix<double,2,1> params;
-            params = C, loss_per_missed_segment*LOSS_SCALE;
+         if (samples.size() > 1 && enableSegmenter)
+         {
+             matrix<double,2,1> params;
+             params = C, loss*LOSS_SCALE;
 
-            matrix<double,2,1> min_params, max_params;
-            min_params = 0.1, 1*LOSS_SCALE;
-            max_params = 100, 10*LOSS_SCALE;
+             matrix<double,2,1> min_params, max_params;
+             min_params = 0.1, 1*LOSS_SCALE;
+             max_params = 100, 10*LOSS_SCALE;
 
-            train_segmenter_bobyqa_objective obj(trainer, samples, local_chunks);
-            try
-            {
-                find_max_bobyqa(obj, params, params.size()*2+1, min_params, max_params, 15, 1, 100);
-            }
-            catch (bobyqa_failure&)
-            {
-                // if the optimization ran too long then just use the default
-                // parameters
-                params = C, loss_per_missed_segment*LOSS_SCALE;
-            }
+             train_segmenter_bobyqa_objective obj(trainer, samples, local_chunks);
+             try
+             {
+                 find_max_bobyqa(obj, params, params.size()*2+1, min_params, max_params, 15, 1, 100);
+             }
+             catch (bobyqa_failure&)
+             {
+                 // if the optimization ran too long then just use the default
+                 // parameters
+                 params = C, loss*LOSS_SCALE;
+             }
 
-            cout << "best C: "<< params(0) << endl;
-            cout << "best loss: "<< params(1)/LOSS_SCALE << endl;
-            trainer.set_c(params(0));
-            trainer.set_loss_per_missed_segment(params(1)/LOSS_SCALE);
-        }
+             cout << "best C: "<< params(0) << endl;
+             cout << "best loss: "<< params(1)/LOSS_SCALE << endl;
+             trainer.set_c(params(0));
+             trainer.set_loss_per_missed_segment(params(1)/LOSS_SCALE);
+         }
 
         segmenter = trainer.train(samples, local_chunks);
         matrix<double,1,3> metrics = test_sequence_segmenter(segmenter, samples, local_chunks);

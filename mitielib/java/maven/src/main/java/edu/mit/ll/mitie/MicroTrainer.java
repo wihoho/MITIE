@@ -47,6 +47,18 @@ public class MicroTrainer {
     globalJNI.MicroTrainer_setThreadNum(swigCPtr, this, num);
   }
 
+  public void setC(double c) {
+    globalJNI.MicroTrainer_setC(swigCPtr, this, c);
+  }
+
+  public void setLoss(double loss) {
+    globalJNI.MicroTrainer_setLoss(swigCPtr, this, loss);
+  }
+
+  public void setEnableSegmenter(boolean enabler) {
+    globalJNI.MicroTrainer_setEnableSegmenter(swigCPtr, this, enabler);
+  }
+
   public void trainSeparateModels(TotalWordFeatureExtractor extractorObject, String filename) {
     globalJNI.MicroTrainer_trainSeparateModels(swigCPtr, this, TotalWordFeatureExtractor.getCPtr(extractorObject), extractorObject, filename);
   }

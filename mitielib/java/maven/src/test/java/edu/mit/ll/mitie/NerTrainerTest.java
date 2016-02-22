@@ -53,17 +53,16 @@ public class NerTrainerTest {
 
         TotalWordFeatureExtractor totalWordFeatureExtractor = TotalWordFeatureExtractor.getEnglishExtractor();
         MicroTrainer microTrainer = new MicroTrainer();
-        MicroTrainer microTrainer1 = new MicroTrainer();
 
         microTrainer.add(nerMicroTrainingInstance);
         microTrainer.add(nerMicroTrainingInstance1);
 
-        microTrainer1.add(nerMicroTrainingInstance);
-        microTrainer1.add(nerMicroTrainingInstance1);
-
         // The trainer can take advantage of a multi-core CPU.  So set the number of threads
         // equal to the number of processing cores for maximum training speed.
         microTrainer.setThreadNum(4);
+        microTrainer.setC(20.0);
+        microTrainer.setLoss(3.0);
+        microTrainer.setEnableSegmenter(false);
 
         // This function does the work of training.  Note that it can take a long time to run
         // when using larger training datasets.  So be patient.  When it finishes it will
@@ -75,9 +74,6 @@ public class NerTrainerTest {
 
         System.out.println("Precision: " + microTrainer.getPrecision());
         System.out.println("Recall: " + microTrainer.getRecall());
-
-
-        microTrainer1.trainSeparateModels(totalWordFeatureExtractor, file.getAbsolutePath());
 
         // restore the model using the pure model and extractor
         MicroNER ner = new MicroNER(file.getAbsolutePath());

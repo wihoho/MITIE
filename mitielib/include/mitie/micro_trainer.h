@@ -249,6 +249,18 @@ namespace mitie
             double new_recall
         );
 
+        void set_C (
+            double new_C
+        );
+
+         void set_loss (
+            double new_loss
+        );
+
+        void set_enableSegmenter (
+           bool new_enableSegmenter
+        );
+
     private:
 
         unsigned long count_of_least_common_label (
@@ -289,6 +301,9 @@ namespace mitie
         std::vector<std::vector<unsigned long> > chunk_labels;
         double precision;
         double recall;
+        double C;
+        double loss;
+        bool enableSegmenter;
     };
 
 // ----------------------------------------------------------------------------------------
