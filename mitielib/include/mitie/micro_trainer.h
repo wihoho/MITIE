@@ -261,6 +261,10 @@ namespace mitie
            bool new_enableSegmenter
         );
 
+        void set_enableTuningClassifier (
+           bool new_enableTuningClassifier
+        );
+
     private:
 
         unsigned long count_of_least_common_label (
@@ -304,6 +308,7 @@ namespace mitie
         double C;
         double loss;
         bool enableSegmenter;
+        bool enableTuningClassifier;
     };
 
 // ----------------------------------------------------------------------------------------

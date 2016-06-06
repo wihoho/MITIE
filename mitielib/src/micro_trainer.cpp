@@ -278,6 +278,14 @@ namespace mitie
         enableSegmenter = new_enableSegmenter;
     }
 
+    void micro_trainer::
+    set_enableTuningClassifier (
+            bool new_enableTuningClassifier
+    )
+    {
+        enableTuningClassifier = new_enableTuningClassifier;
+    }
+
 // ----------------------------------------------------------------------------------------
 
     micro_ner micro_trainer::
@@ -433,7 +441,7 @@ namespace mitie
         trainer.set_max_iterations(2000);
         //trainer.be_verbose();
 
-        if (count_of_least_common_label(labels) > 1)
+        if (count_of_least_common_label(labels) > 1 && enableTuningClassifier)
         {
             train_ner_segment_classifier_objective obj(samples, labels, num_threads, beta, get_all_labels().size(), 2000);
 

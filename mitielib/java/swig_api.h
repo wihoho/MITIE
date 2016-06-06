@@ -393,6 +393,11 @@ public:
         impl.set_enableSegmenter(enabler);
     }
 
+    void setEnableTuningClassifier(bool enabler)
+    {
+        impl.set_enableTuningClassifier(enabler);
+    }
+
     void trainSeparateModels(
         const TotalWordFeatureExtractor& extractorObject, 
         const std::string& filename

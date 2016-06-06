@@ -63,6 +63,7 @@ public class NerTrainerTest {
         microTrainer.setC(20.0);
         microTrainer.setLoss(3.0);
         microTrainer.setEnableSegmenter(false);
+        microTrainer.setEnableTuningClassifier(false);
 
         // This function does the work of training.  Note that it can take a long time to run
         // when using larger training datasets.  So be patient.  When it finishes it will
