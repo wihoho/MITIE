@@ -1,6 +1,8 @@
 language: java
 
 before_script:
+  - sudo: required
+  - sudo apt-get install libstdc++6
   - export MAVEN_SKIP_RC=true
   - export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=192m"
   - unset GEM_PATH GEM_HOME IRBRC JRUBY_OPTSq
