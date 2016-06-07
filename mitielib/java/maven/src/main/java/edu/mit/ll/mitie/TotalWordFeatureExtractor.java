@@ -8,6 +8,9 @@
 
 package edu.mit.ll.mitie;
 
+import java.io.IOException;
+import java.util.Objects;
+
 public class TotalWordFeatureExtractor {
   private long swigCPtr;
   protected boolean swigCMemOwn;
@@ -39,4 +42,33 @@ public class TotalWordFeatureExtractor {
     this(globalJNI.new_TotalWordFeatureExtractor(filename), true);
   }
 
+  private static TotalWordFeatureExtractor englishExtractor;
+
+  public static TotalWordFeatureExtractor getEnglishExtractor() {
+    if (Objects.isNull(englishExtractor)) {
+      try {
+        String tempExtractorPath = NativeUtils.getTempPathFromJar("/extractors/english/total_word_feature_extractor.dat");
+        englishExtractor = new TotalWordFeatureExtractor(tempExtractorPath);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    return englishExtractor;
+  }
+
+  private static TotalWordFeatureExtractor japaneseExtractor;
+
+  public static TotalWordFeatureExtractor getJapaneseExtractor() {
+    if (Objects.isNull(japaneseExtractor)) {
+      try {
+        String tempExtractorPath = NativeUtils.getTempPathFromJar("/extractors/japanese/jp_extractor_m.dat");
+        japaneseExtractor = new TotalWordFeatureExtractor(tempExtractorPath);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    return japaneseExtractor;
+  }
 }
