@@ -49,6 +49,7 @@ namespace mitie
 
         dlib::deserialize(extractorName) >> classname >> fe;
     }
+
 // ----------------------------------------------------------------------------------------
 
     text_categorizer::
@@ -68,6 +69,7 @@ namespace mitie
     void text_categorizer::
     predict (
         const std::vector<std::string>& sentence,
+        const total_word_feature_extractor& fe,
         string& text_tag,
         double& text_score
     ) const {
@@ -92,7 +94,8 @@ namespace mitie
 
     string text_categorizer::
     operator() (
-        const std::vector<std::string>& sentence
+        const std::vector<std::string>& sentence,
+        const total_word_feature_extractor& fe
     ) const
     {
         std::pair<unsigned long, double> temp;

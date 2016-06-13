@@ -13,7 +13,7 @@ namespace mitie
 
 // ----------------------------------------------------------------------------------------
     text_categorizer_trainer::
-    text_categorizer_trainer ( ) : beta(0.5), num_threads(4)
+    text_categorizer_trainer ( ) : beta(0.5), num_threads(4), enableTuningClassifier(true)
     {
 
     }
@@ -101,10 +101,18 @@ namespace mitie
         beta = new_beta;
     }
 
+    void text_categorizer_trainer::
+    set_enableTuningClassifier (
+            bool new_enableTuningClassifier
+    )
+    {
+        enableTuningClassifier = new_enableTuningClassifier;
+    }
+
 // ----------------------------------------------------------------------------------------
 
     text_categorizer text_categorizer_trainer::
-    train (
+    train ( const total_word_feature_extractor& tfe
     ) const
     /*!
         requires
@@ -247,7 +255,7 @@ namespace mitie
         trainer.set_max_iterations(2000);
         //trainer.be_verbose();
 
-        if (count_of_least_common_label(labels) > 1)
+        if (count_of_least_common_label(labels) > 1 && enableTuningClassifier)
         {
             train_text_classifier_objective obj(samples, labels, num_threads, beta, get_all_labels().size(), 2000);
 

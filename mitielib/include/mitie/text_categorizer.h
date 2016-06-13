@@ -96,6 +96,7 @@ namespace mitie
 
         void predict(
                 const std::vector<std::string>& sentence,
+                const total_word_feature_extractor& fe,
                 string& text_tag,
                 double& text_score
         ) const;
@@ -114,7 +115,8 @@ namespace mitie
         !*/
 
         string operator() (
-                const std::vector<std::string>& sentence
+                const std::vector<std::string>& sentence,
+                const total_word_feature_extractor& fe
         ) const;
         /*!
             ensures

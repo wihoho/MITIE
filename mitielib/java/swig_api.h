@@ -131,6 +131,8 @@ private:
     friend class NerTrainer;
     friend class MicroNER;
     friend class MicroTrainer;
+    friend class TextCategorizer;
+    friend class TextCategorizerTrainer;
     mitie::total_word_feature_extractor impl;
 };
 
@@ -475,20 +477,15 @@ private:
 class TextCategorizer
 {
 public:
-    TextCategorizer (
-            const std::string& filename
-    )
-    {
-        std::string classname;
-        dlib::deserialize(filename) >> classname;
-        if (classname != "mitie::text_categorizer")
-            throw dlib::error("This file does not contain a mitie::text_categorizer. Contained: " + classname);
-        dlib::deserialize(filename) >> classname >> impl;
-    }
-
     TextCategorizer (const std::string& pureModelName,
                          const std::string& extractorName
     ) :impl(pureModelName, extractorName)
+    {
+
+    }
+
+    TextCategorizer (const std::string& pureModelName
+    ) :impl(pureModelName)
     {
 
     }
@@ -507,12 +504,13 @@ public:
     }
 
     std::pair<std::string, double> categorizeDoc (
-            const std::vector<std::string>& words
+            const std::vector<std::string>& words,
+            const TotalWordFeatureExtractor& extractorObject
     ) const
     {
         std::string predicted_label;
         double predicted_score;
-        impl.predict(words, predicted_label, predicted_score);
+        impl.predict(words, extractorObject.impl, predicted_label, predicted_score);
         return std::make_pair(predicted_label, predicted_score);
     }
 
@@ -524,7 +522,7 @@ private:
 class TextCategorizerTrainer
 {
 public:
-    TextCategorizerTrainer(const std::string& filename) : impl(filename)
+    TextCategorizerTrainer() : impl()
     {
     }
 
@@ -539,15 +537,15 @@ public:
         impl.set_num_threads(num);
     }
 
-    void train(const std::string& filename) const
+    void setEnableTuningClassifier(bool enabler)
     {
-        mitie::text_categorizer obj = impl.train();
-        dlib::serialize(filename) << "mitie::text_categorizer" << obj;
+        impl.set_enableTuningClassifier(enabler);
     }
 
-    void trainSeparateModels(const std::string& filename) const
+    void trainSeparateModels(const TotalWordFeatureExtractor& extractorObject,
+                             const std::string& filename) const
     {
-        mitie::text_categorizer obj = impl.train();
+        mitie::text_categorizer obj = impl.train(extractorObject.impl);
         dlib::serialize(filename)
         << "mitie::text_categorizer_pure_model"
         << obj.get_df()

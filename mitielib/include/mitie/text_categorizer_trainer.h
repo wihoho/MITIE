@@ -34,6 +34,7 @@ namespace mitie
         explicit text_categorizer_trainer (
                 const std::string& filename
         );
+
         /*!
             ensures
                 - #get_beta() == 0.5
@@ -118,7 +119,12 @@ namespace mitie
                 - #get_beta() == new_beta
         !*/
 
-        text_categorizer train (
+
+        void set_enableTuningClassifier (
+                bool new_enableTuningClassifier
+        );
+
+        text_categorizer train ( const total_word_feature_extractor& tfe
         ) const;
         /*!
             requires
@@ -148,6 +154,7 @@ namespace mitie
         total_word_feature_extractor tfe;
         double beta;
         unsigned long num_threads;
+        bool enableTuningClassifier;
         std::map<std::string,unsigned long> label_to_id;
         std::vector<std::vector<std::string> > contents;
         std::vector<unsigned long> text_labels;
