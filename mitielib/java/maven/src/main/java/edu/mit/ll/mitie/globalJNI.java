@@ -15,12 +15,13 @@ public class globalJNI {
   static {
     try {
       String osName = System.getProperty("os.name");
-      if (osName.equals("Linux")) {
-        NativeUtils.loadLibraryFromJar("/natives/libjavamitie.so");
-
-      } else if (osName.equals("Windows 7")) {
-        NativeUtils.loadLibraryFromJar("/natives/javamitie.dll");
-
+      switch (osName) {
+        case "Linux":
+          NativeUtils.loadLibraryFromJar("/natives/libjavamitie.so");
+          break;
+        case "Windows 7":
+          NativeUtils.loadLibraryFromJar("/natives/javamitie.dll");
+          break;
       }
     } catch (UnsatisfiedLinkError e) {
       System.err.println("Native code library failed to load. Please contact Magic Core. \n" + e);
