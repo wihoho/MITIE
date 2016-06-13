@@ -33,7 +33,10 @@ if (NOT TARGET mitie)
          src/mitie.cpp
          src/conll_parser.cpp
          src/ner_trainer.cpp
-	 src/micro_ner.cpp
+         src/micro_ner.cpp
+         src/text_categorizer_trainer.cpp
+         src/text_categorizer.cpp
+         src/text_feature_extraction.cpp
          )
 
    add_library(mitie ${source_files})

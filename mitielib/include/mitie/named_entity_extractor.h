@@ -47,10 +47,6 @@ namespace mitie
                                const std::string& extractorName
         );
 
-        named_entity_extractor(const std::string& pureModelName,
-                               const total_word_feature_extractor fe
-        );
-
         /*!
             requires
                 - segmenter.get_feature_extractor().num_features() == fe.get_num_dimensions() 
@@ -70,6 +66,7 @@ namespace mitie
                 - The interpretation of tag_name_strings is that it maps the output of df
                   into a meaningful text name for the NER tag.  
         !*/
+
 
         dlib::uint64 get_fingerprint(
         ) const { return fingerprint; }
