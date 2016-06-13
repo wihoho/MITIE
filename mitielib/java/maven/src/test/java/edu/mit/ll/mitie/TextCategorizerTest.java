@@ -2,6 +2,8 @@ package edu.mit.ll.mitie;
 
 import java.io.File;
 
+import org.junit.Test;
+
 /**
  * @Author yichao <jin_y@worksap.co.jp> on 13/06/2016.
  */
@@ -41,6 +43,7 @@ public class TextCategorizerTest {
         // The trainer can take advantage of a multi-core CPU.  So set the number of threads
         // equal to the number of processing cores for maximum training speed.
         trainer.setThreadNum(4);
+        trainer.setEnableTuningClassifier(false);
         // This function does the work of training.  Note that it can take a long time to run
         // when using larger training datasets.  So be patient.
         trainer.trainSeparateModels(TotalWordFeatureExtractor.getEnglishExtractor(), file.getAbsolutePath());
