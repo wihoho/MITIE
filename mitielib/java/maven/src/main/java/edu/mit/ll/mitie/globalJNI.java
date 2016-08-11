@@ -23,6 +23,7 @@ public class globalJNI {
           NativeUtils.loadLibraryFromJar("/natives/javamitie.dll");
           break;
         case "Windows 8.1":
+        case "Windows 10":
           NativeUtils.loadLibraryFromJar("/natives/javamitie8.dll");
           break;
       }
