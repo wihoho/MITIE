@@ -4,8 +4,6 @@
 
 #include <mitie/ner_trainer.h>
 #include <dlib/svm_threaded.h>
-#include <dlib/optimization.h>
-#include <dlib/misc_api.h>
 
 using namespace std;
 using namespace dlib;
@@ -252,6 +250,13 @@ namespace mitie
                 cout << ", ";
         }
         cout << endl;
+
+        std::vector<std::string> words = tfe.get_words_in_dictionary();
+        int i = 1;
+        for(std::vector<string>::iterator iterator1 = words.begin(); iterator1 != words.end(); ++ iterator1) {
+            cout << i << " " << *iterator1 << "\n";
+            i ++;
+        }
 
         cout << "Part I: train segmenter" << endl;
 

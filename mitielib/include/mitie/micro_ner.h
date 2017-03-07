@@ -38,7 +38,7 @@ namespace mitie
         micro_ner():fingerprint(0){}
 
         micro_ner(
-            const std::vector<std::string>& tag_name_strings,
+                  std::vector<std::string>& tag_name_strings,
             //const total_word_feature_extractor& fe,
             const dlib::sequence_segmenter<ner_feature_extractor>& segmenter,
             const dlib::multiclass_linear_decision_function<dlib::sparse_linear_kernel<ner_sample_type>,unsigned long>& df
@@ -133,12 +133,18 @@ namespace mitie
                     - The textual label for the i-th entity is get_tag_name_strings()[#chunk_tags[i]].
         !*/
 
-        const std::vector<std::string>& get_tag_name_strings (
-        ) const { return tag_name_strings; }
+         std::vector<std::string>& get_tag_name_strings (
+        )  { return tag_name_strings; }
         /*!
             ensures
                 - Returns a vector that maps entity numeric ID tags into their string labels.  
         !*/
+
+        void reset_tag_name_strings (std::string newString
+        )  {
+            tag_name_strings.clear();
+            tag_name_strings.push_back(newString);
+        }
 
         friend void serialize(const micro_ner& item, std::ostream& out)
         {

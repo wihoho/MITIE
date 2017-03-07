@@ -10,7 +10,7 @@ namespace mitie
 {
     micro_ner::
     micro_ner(
-        const std::vector<std::string>& tag_name_strings_,
+         std::vector<std::string>& tag_name_strings_,
         const dlib::sequence_segmenter<ner_feature_extractor>& segmenter_,
         const dlib::multiclass_linear_decision_function<dlib::sparse_linear_kernel<ner_sample_type>,unsigned long>& df_
     ) : tag_name_strings(tag_name_strings_), segmenter(segmenter_), df(df_)
