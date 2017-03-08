@@ -38,17 +38,17 @@ namespace mitie
         micro_ner():fingerprint(0){}
 
         micro_ner(
-            const std::vector<std::string>& tag_name_strings,
-            //const total_word_feature_extractor& fe,
-            const dlib::sequence_segmenter<ner_feature_extractor>& segmenter,
-            const dlib::multiclass_linear_decision_function<dlib::sparse_linear_kernel<ner_sample_type>,unsigned long>& df
+                std::vector<std::string>& tag_name_strings,
+                //const total_word_feature_extractor& fe,
+                const dlib::sequence_segmenter<ner_feature_extractor>& segmenter,
+                const dlib::multiclass_linear_decision_function<dlib::sparse_linear_kernel<ner_sample_type>,unsigned long>& df
         );
 
         micro_ner(const std::string& pureModelName);
 
         /*!
             requires
-                - segmenter.get_feature_extractor().num_features() == fe.get_num_dimensions() 
+                - segmenter.get_feature_extractor().num_features() == fe.get_num_dimensions()
                 - df must be designed to work with fe (i.e. it must have been trained with
                   features from fe and extract_ner_chunk_features()).
                 - df.number_of_classes() => tag_name_strings.size()
@@ -61,9 +61,9 @@ namespace mitie
                       integers and that the tag_name_strings vector and the decision function
                       need to agree on the set of labels)
             ensures
-                - Just loads the given objects into *this.  
+                - Just loads the given objects into *this.
                 - The interpretation of tag_name_strings is that it maps the output of df
-                  into a meaningful text name for the NER tag.  
+                  into a meaningful text name for the NER tag.
         !*/
 
         dlib::uint64 get_fingerprint(
@@ -80,22 +80,22 @@ namespace mitie
         !*/
 
         void predict(
-            const total_word_feature_extractor& fe,
-            const std::vector<std::string>& sentence,
-            std::vector<std::pair<unsigned long, unsigned long> >& chunks,
-            std::vector<unsigned long>& chunk_tags,
-            std::vector<double>& chunk_scores
+                const total_word_feature_extractor& fe,
+                const std::vector<std::string>& sentence,
+                std::vector<std::pair<unsigned long, unsigned long> >& chunks,
+                std::vector<unsigned long>& chunk_tags,
+                std::vector<double>& chunk_scores
         ) const;
         /*!
             ensures
                 - Runs the named entity recognizer on the sequence of tokenized words
-                  inside sentence.  The detected named entities are stored into chunks.  
-                - #chunks == the locations of the named entities. 
+                  inside sentence.  The detected named entities are stored into chunks.
+                - #chunks == the locations of the named entities.
                 - The identified named entities are listed inside chunks in the order in
-                  which they appeared in the input sentence.  
+                  which they appeared in the input sentence.
                 - #chunks.size() == #chunk_tags.size()
                 - for all valid i:
-                    - #chunk_tags[i] == the label for the entity at location #chunks[i].  Moreover, 
+                    - #chunk_tags[i] == the label for the entity at location #chunks[i].  Moreover,
                       chunk tag ID numbers are contiguous and start at 0.  Therefore we have:
                         - 0 <= #chunk_tags[i] < get_tag_name_strings().size()
                     - #chuck_score[i] == the score for the entity at location #chunks[i]. The value
@@ -110,21 +110,21 @@ namespace mitie
         !*/
 
         void operator() (
-            const total_word_feature_extractor& fe,
-            const std::vector<std::string>& sentence,
-            std::vector<std::pair<unsigned long, unsigned long> >& chunks,
-            std::vector<unsigned long>& chunk_tags
+                const total_word_feature_extractor& fe,
+                const std::vector<std::string>& sentence,
+                std::vector<std::pair<unsigned long, unsigned long> >& chunks,
+                std::vector<unsigned long>& chunk_tags
         ) const;
         /*!
             ensures
                 - Runs the named entity recognizer on the sequence of tokenized words
-                  inside sentence.  The detected named entities are stored into chunks.  
-                - #chunks == the locations of the named entities. 
+                  inside sentence.  The detected named entities are stored into chunks.
+                - #chunks == the locations of the named entities.
                 - The identified named entities are listed inside chunks in the order in
-                  which they appeared in the input sentence.  
+                  which they appeared in the input sentence.
                 - #chunks.size() == #chunk_tags.size()
                 - for all valid i:
-                    - #chunk_tags[i] == the label for the entity at location #chunks[i].  Moreover, 
+                    - #chunk_tags[i] == the label for the entity at location #chunks[i].  Moreover,
                       chunk tag ID numbers are contiguous and start at 0.  Therefore we have:
                         - 0 <= #chunk_tags[i] < get_tag_name_strings().size()
                     - #chunks[i] == a half open range indicating where the entity is within
@@ -133,12 +133,18 @@ namespace mitie
                     - The textual label for the i-th entity is get_tag_name_strings()[#chunk_tags[i]].
         !*/
 
-        const std::vector<std::string>& get_tag_name_strings (
-        ) const { return tag_name_strings; }
+        std::vector<std::string>& get_tag_name_strings (
+        )  { return tag_name_strings; }
         /*!
             ensures
-                - Returns a vector that maps entity numeric ID tags into their string labels.  
+                - Returns a vector that maps entity numeric ID tags into their string labels.
         !*/
+
+        void reset_tag_name_strings (std::string newString
+        )  {
+            tag_name_strings.clear();
+            tag_name_strings.push_back(newString);
+        }
 
         friend void serialize(const micro_ner& item, std::ostream& out)
         {
@@ -196,4 +202,3 @@ namespace mitie
 }
 
 #endif // MIT_LL_MITIE_NaMED_ENTITY_EXTRACTOR_H_
-
